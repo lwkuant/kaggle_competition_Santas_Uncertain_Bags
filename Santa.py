@@ -84,8 +84,10 @@ gift_weights = simulate_weights(gifts, gifts_weights_distribution, seed)
 
 def visualize_count(df, gifts_weights_distribution, seed):
     import matplotlib.pyplot as plt 
+    import matplotlib
     %matplotlib inline
     from matplotlib import cm
+    from matplotlib import colors
     import numpy as np
     import pandas as pd
     import seaborn as sns
@@ -98,16 +100,24 @@ def visualize_count(df, gifts_weights_distribution, seed):
     gift_counts = sorted(gift_counts, reverse=True)
     gift_types = [gift_types[i] for i in order_ind]
                    
-                   
+    matplotlib.style.use('ggplot')    
+    colormap = cm.get_cmap('Greens')     
+    norm = colors.Normalize(vmax=max(gift_counts), vmin=min(gift_counts))      
+    bar_colors = [colormap(norm(val)) for val in gift_counts]
     color_map = cm.get_cmap('Spectral')
     fig, axes = plt.subplots(figsize=[15, 15])
-    axes.bar(list(range(len(gift_types))), gift_counts, color='#2E8B57')
+    axes.bar(list(range(len(gift_types))), gift_counts, color=bar_colors)
     axes.set_xticks(np.arange(len(gift_types))+0.4)
     axes.set_xticklabels(gift_types)
+    axes.set_xlabel('Gift Type', fontsize=15)
+    axes.set_ylabel('Count', fontsize=15)
     axes.set_ylim(0, max(gift_counts)+100)
-
-# plot the count 
+    axes.set_title('Count for Each Gift Type', fontsize=30)
+    fig.tight_layout()
+    plt.savefig('Count_for_each_type.png', dpi=300)
     
+# plot the count 
+
 
 
     
