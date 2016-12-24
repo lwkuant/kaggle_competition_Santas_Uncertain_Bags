@@ -79,6 +79,8 @@ def simulate_weights(df, gifts_weights_distribution, seed):
     return weights_dict
 
 ## plot the data 
+
+# plot the count 
 seed = 100
 gift_weights = simulate_weights(gifts, gifts_weights_distribution, seed)
 
@@ -107,16 +109,18 @@ def visualize_count(df, gifts_weights_distribution, seed):
     color_map = cm.get_cmap('Spectral')
     fig, axes = plt.subplots(figsize=[15, 15])
     axes.bar(list(range(len(gift_types))), gift_counts, color=bar_colors)
+    axes.tick_params(labelsize=20)
     axes.set_xticks(np.arange(len(gift_types))+0.4)
-    axes.set_xticklabels(gift_types)
-    axes.set_xlabel('Gift Type', fontsize=15)
-    axes.set_ylabel('Count', fontsize=15)
+    axes.set_xticklabels(gift_types, fontsize=20)
+    axes.set_xlabel('Gift Type', fontsize=25)
+    axes.set_ylabel('Count', fontsize=25)
     axes.set_ylim(0, max(gift_counts)+100)
     axes.set_title('Count for Each Gift Type', fontsize=30)
     fig.tight_layout()
     plt.savefig('Count_for_each_type.png', dpi=300)
     
-# plot the count 
+# plot the each gift type's weight distribution
+
 
 
 
