@@ -118,10 +118,94 @@ def visualize_count(df, gifts_weights_distribution, seed):
     axes.set_title('Count for Each Gift Type', fontsize=30)
     fig.tight_layout()
     plt.savefig('Count_for_each_type.png', dpi=300)
+
+visualize_count(gifts, gifts_weights_distribution, seed)
+
+# plot the each gift type's weight boxplot
+seed = 100
+
+def visualize_distribution_box(df, gifts_weights_distribution, seed):
+    import matplotlib.pyplot as plt 
+    import matplotlib
+    %matplotlib inline
+    from matplotlib import cm
+    from matplotlib import colors
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
     
-# plot the each gift type's weight distribution
+    gift_weights = simulate_weights(df, gifts_weights_distribution, seed)
+    
+    gift_types = list(gift_weights.keys())
+    gift_counts = [len(gift_weights[type]) for type in gift_types]
 
+    fig, axes = plt.subplots(figsize=[15, 15])
+    axes.tick_params(labelsize=20)
+    sns.boxplot(pd.DataFrame(gift_weights))
+    axes.set_title('Boxplot for Each Gift Type', fontsize=30)
+    axes.set_xlabel('Gift Type', fontsize=25)
+    axes.set_ylabel('Weights', fontsize=25)
+    fig.tight_layout()
+    plt.savefig('Boxplot_for_each_type.png', dpi=300)
 
+# plot the each gift type's weight distribution (KDE)
+seed = 100
 
+def visualize_distribution_kde(df, gifts_weights_distribution, seed):
+    import matplotlib.pyplot as plt 
+    import matplotlib
+    %matplotlib inline
+    from matplotlib import cm
+    from matplotlib import colors
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
+    
+    gift_weights = simulate_weights(df, gifts_weights_distribution, seed)
+    
+    gift_types = list(gift_weights.keys())
+    gift_counts = [len(gift_weights[type]) for type in gift_types]
 
+    color_palette = sns.color_palette(palette='Paired', n_colors=len(gift_types))
+    fig, axes = plt.subplots(figsize=[15, 15])
+    axes.tick_params(labelsize=20)
+    for (type, col) in zip(gift_types, color_palette):
+        sns.kdeplot(gift_weights[type], color=col, alpha=0.8, linewidth=3,
+                    ax=axes, label=type)
+    axes.legend(gift_types, loc=0, fontsize=15)
+    axes.set_title('Kde for Each Gift Type', fontsize=30)
+    axes.set_xlabel('Gift Type', fontsize=25)
+    axes.set_ylabel('Density', fontsize=25)
+    fig.tight_layout()
+    plt.savefig('Kde_for_each_type.png', dpi=300)
+
+# plot the each gift type's weight distribution (Histogram)
+seed = 100
+
+def visualize_distribution_histo(df, gifts_weights_distribution, seed):
+    import matplotlib.pyplot as plt 
+    import matplotlib
+    %matplotlib inline
+    from matplotlib import cm
+    from matplotlib import colors
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
+    
+    gift_weights = simulate_weights(df, gifts_weights_distribution, seed)
+    
+    gift_types = list(gift_weights.keys())
+    gift_counts = [len(gift_weights[type]) for type in gift_types]
+    
+    fig = plt.figure(figsize=(20, 20))                
+    plt.suptitle('Histogram for Each Gift Type', fontsize=25, y=0.94)
+    for (i, type) in enumerate(gift_types, start=1):
+        axes = fig.add_subplot(3, 3, i)
+        axes.tick_params(labelsize=10)
+        sns.distplot(gift_weights[type], ax=axes, color='#2E8B57')
+        axes.set_xlabel(type, fontsize=15)
+        axes.set_ylabel('Density', fontsize=15)
+    #fig.tight_layout()
+    plt.savefig('Histogram_for_each_type.png', dpi=300)    
+        
     
